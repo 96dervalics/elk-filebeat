@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  filebeat:
+    build:
+      context: .
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./config/filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml
+        read_only: true
+      - type: bind
+        source: ./test_logs
+        target: /var/lib/docker/containers
