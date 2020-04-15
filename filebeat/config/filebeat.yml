@@ -3,7 +3,6 @@ filebeat.inputs:
      enabled: true
      paths:
         - '/var/lib/docker/containers/*.log'
-     tags: ['logme']
 
 output.logstash:
    enabled: true
