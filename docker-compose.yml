@@ -91,6 +91,25 @@ services:
       - logstash
     networks:
       - elk
+      
+  postgresql_beat:
+    container_name: postgresql_beat
+    build:
+      context: postgresql_beat/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    env_file:
+      - ./postgresql_beat/config/database.env
+    volumes:
+      - type: bind
+        source: ./postgresql_beat/config/filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml
+        read_only: true
+    depends_on:
+      - elasticsearch
+      - logstash
+    networks:
+      - elk
 
 networks:
   elk:
