@@ -1,0 +1,20 @@
+# launch docker
+docker compose up
+
+# go inside container
+docker exec -it postgresql_beat bash
+
+# launch postgresql
+psql --host=postgresql_beat --username=root --dbname=test_db (+enter pw database.env)
+
+# create tables, add value etc... to generate log
+\d
+CREATE TABLE test_table(name TEXT);
+\d
+INSERT INTO test_table VALUES ('valami');
+SELECT * FROM test_table;
+CREATE TABLE test_table(name TEXT);
+\q
+
+#check logs
+cd var/log/postgresql
