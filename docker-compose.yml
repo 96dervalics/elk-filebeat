@@ -72,48 +72,43 @@ services:
     depends_on:
       - elasticsearch
 
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - ./postgres/conf/postgresql.docker.conf:/etc/postgresql/postgresql.conf
+      - pglogs:/var/log/postgresql/:rw
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - "5432:5432"
+    networks:
+      - elk
+
   filebeat:
     container_name: filebeat
     build:
       context: filebeat/
       args:
         ELK_VERSION: $ELK_VERSION
+    environment:
+      - strict.perms=false
     volumes:
-      - type: bind
-        source: ./filebeat/config/filebeat.yml
-        target: /usr/share/filebeat/filebeat.yml
-        read_only: true
-      - type: bind
-        source: ./test_logs
-        target: /var/lib/docker/containers
+      - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - pglogs:/var/log/postgresql/:ro
+    networks:
+      - elk
     depends_on:
       - elasticsearch
       - logstash
-    networks:
-      - elk
-      
-  postgresql_beat:
-    container_name: postgresql_beat
-    build:
-      context: postgresql_beat/
-      args:
-        ELK_VERSION: $ELK_VERSION
-    env_file:
-      - ./postgresql_beat/config/database.env
-    volumes:
-      - type: bind
-        source: ./postgresql_beat/config/filebeat.yml
-        target: /usr/share/filebeat/filebeat.yml
-        read_only: true
-    depends_on:
-      - elasticsearch
-      - logstash
-    networks:
-      - elk
+      - postgres
 
 networks:
   elk:
     driver: bridge
 
 volumes:
+  pglogs:
+    driver: local
   elasticsearch:
