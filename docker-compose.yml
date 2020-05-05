@@ -97,6 +97,10 @@ services:
     volumes:
       - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - pglogs:/var/log/postgresql/:ro
+      #
+      - ./test_logs/container1:/var/lib/docker/containers/1/:ro
+      - ./test_logs/container2:/var/lib/docker/containers/2/:ro
+      - ./test_logs/container3:/var/lib/docker/containers/3/:ro
     networks:
       - elk
     depends_on:
