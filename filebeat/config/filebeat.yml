@@ -1,14 +1,28 @@
-#filebeat.inputs:
-#   - type: log
-#     enabled: true
-#     paths:
-#        - '/var/lib/docker/containers/*.log'
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - '/var/lib/docker/containers/1/*.log'
+    fields:
+      tag: json
+  - type: log
+    enabled: true
+    paths:
+      - '/var/lib/docker/containers/2/*.log'
+    fields:
+      tag: quotation
+  - type: log
+    enabled: true
+    paths:
+      - '/var/lib/docker/containers/3/*.log'
+    fields:
+      tag: comma
 
-filebeat.modules:
-  - module: postgresql
-    log:
-      enabled: true
-      var.paths: ['/var/log/postgresql/*.log']
+# filebeat.modules:
+#   - module: postgresql
+#     log:
+#       enabled: true
+#       var.paths: ['/var/log/postgresql/*.log']
 
 output.logstash:
    enabled: true

@@ -1,3 +1,9 @@
 # log
-test_logs/*
-!test_logs/.gitkeep
+test_logs/container1/*
+!test_logs/container1/.gitkeep
+
+test_logs/container2/*
+!test_logs/container2/.gitkeep
+
+test_logs/container2/*
+!test_logs/container2/.gitkeep

@@ -1,14 +1,14 @@
 # launch docker
-docker compose up
+docker-compose up
 
 # go inside container
-docker exec -it postgresql_beat bash
+docker exec -it elk_simpl_postgres_1 bash
 
 # launch postgresql
-psql --host=postgresql_beat --username=root --dbname=test_db (+enter pw database.env)
+psql --host=elk_simpl_postgres_1 --username=postgres --dbname=postgres
+ (+enter pw: postgres)
 
 # create tables, add value etc... to generate log
-\d
 CREATE TABLE test_table(name TEXT);
 \d
 INSERT INTO test_table VALUES ('valami');
