@@ -18,11 +18,15 @@ filebeat.inputs:
     fields:
       tag: comma
 
-# filebeat.modules:
-#   - module: postgresql
-#     log:
-#       enabled: true
-#       var.paths: ['/var/log/postgresql/*.log']
+filebeat.modules:
+  - module: postgresql
+    log:
+      enabled: true
+      var.paths: ['/var/log/postgresql/*.log']
+  - module: rabbitmq
+    log:
+      enabled: true
+      var.paths: ['/var/log/rabbitmq/*.log']
 
 output.logstash:
    enabled: true

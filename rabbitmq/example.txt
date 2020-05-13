@@ -1,0 +1,11 @@
+# launch docker
+docker-compose up
+
+# go inside container
+docker exec -it rabbitmq bash
+
+# go to the log folder
+cd var/log/rabbitmq/log
+
+# add something
+echo "test" > vmi.log
