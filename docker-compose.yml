@@ -86,6 +86,33 @@ services:
     networks:
       - elk
 
+  # rabbit:
+  #   container_name: rabbit
+  #   image: "rabbitmq"
+  #   hostname: "rabbit"
+  #   ports:
+  #     - 15672:15672
+  #     - 5672:5672
+  #   labels:
+  #     NAME: "rabbitmq1"
+  #   volumes:
+  #     - ./data/rabbitmq:/var/lib/rabbitmq:rw
+  #     - ./rabbitmq/definitions.json:/opt/definitions.json:ro
+  #     - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+  #   networks:
+  #     - elk
+
+  rabbitmq:
+    container_name: rabbitmq
+    build: rabbitmq/
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitlogs:/var/log/rabbitmq/log/:rw
+    networks:
+      - elk
+
   filebeat:
     container_name: filebeat
     build:
@@ -97,6 +124,7 @@ services:
     volumes:
       - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - pglogs:/var/log/postgresql/:ro
+      - rabbitlogs:/var/log/rabbitmq/:ro
       #
       - ./test_logs/container1:/var/lib/docker/containers/1/:ro
       - ./test_logs/container2:/var/lib/docker/containers/2/:ro
@@ -114,5 +142,7 @@ networks:
 
 volumes:
   pglogs:
+    driver: local
+  rabbitlogs:
     driver: local
   elasticsearch:
